@@ -1,0 +1,20 @@
+/*  
+Theme Name: Now
+Theme URI: http://themeidea.com
+Description: An extensive mobile theme for an ordinary bloggers and web developers
+Version: 1.5
+Author: xRicrdx
+Author URI: http://themeidea.com/
+License URI: http://themeidea.com/
+License: The GPLv2 (or later) from the Free Software Foundation is the license that the WordPress software is under. Its text follows.
+*/
+
+.wp-caption-text,
+.sticky,
+.gallery-caption,
+.bypostauthor,
+.alignright,
+.alignleft,
+.aligncenter{
+	/* Referenced in style.php, Themeswitcher doesn't read style.php */
+}

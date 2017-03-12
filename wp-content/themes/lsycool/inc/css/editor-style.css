@@ -1,0 +1,11 @@
+.mce-content-body{padding:10px 15px;font-family:"PingFang SC","Microsoft Yahei",Verdana,Arial,Helvetica,sans-serif;font-size:14px;}
+.mce-content-body{font-size:14px;line-height:30px;}
+.mce-content-body h1{font-size:28px;margin:0 0 22px 0;}
+.mce-content-body h2{font-size:24px;margin:0 0 22px 0;}
+.mce-content-body h3{font-size:20px;margin:0 0 22px 0;}
+.mce-content-body a{color:#9b9b9b}
+.mce-content-body p{margin:0 0 22px;}
+.mce-content-body blockquote{border-left:8px solid #9b9b9b;background:#f5f5f5;padding:10px 22px;margin:0 0 40px;}
+.mce-content-body blockquote p{margin:0}
+.mce-content-body img{max-width:100%;height:auto;}
+.mce-content-body .aligncenter{margin:0 auto;display:block;text-align: center;}
