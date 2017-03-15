@@ -1,0 +1,52 @@
+.site-content {
+    max-width: 1260px;
+}
+
+.comments {
+    margin-top: 10px !important;
+    padding-top: 30px !important;
+}
+
+.baguetteBoxOne {
+	width:1160px; 
+	margin:36px auto;
+}
+
+.album {
+    text-align: center;
+}
+
+.album img {
+    width: auto;
+    height: 200px;
+    box-shadow: 0 0 4px -1px #000;
+}
+
+.album figure {
+	line-height: 0;
+	display: inline-block;
+	margin: 4px 10px;
+	perspective: 2600px;
+	transform-origin: center bottom;
+	transform-style: preserve-3d;
+	transition: 1s transform;
+}
+
+.album figure figcaption { 
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 30px;
+	color: #fff; 
+	transform-origin: center top;
+	transform: rotateX(-89.9deg);
+	font: 1.2vw Montserrat, Arial, sans-serif;
+	text-align: center;
+	line-height: 2vw;
+    box-shadow: 0 0 4px -1px #000;
+}
+
+.album figure:hover {
+	cursor:pointer;
+	transform: rotateX(75deg) translateZ(5vw); 
+}

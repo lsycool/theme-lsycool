@@ -521,6 +521,7 @@ function bolo_after_wp_tiny_mce($mce_settings) {
         QTags.addButton('mark', '黄字', "<mark>", "</mark>");
         QTags.addButton('xhx', '下划线', "<u>", "</u>");
         QTags.addButton('embed', '文章引用', "[mimelove_insert_post ids=文章id]");
+        QTags.addButton('prettyCode', '代码高亮', "<pre class='prettyprint linenums'>", "</pre>");
 	function bolo_QTnextpage_arg1() {
 	}  
 	</script>  
@@ -641,7 +642,7 @@ function my_custom_init() {
 	'query_var' => true, 
 	'rewrite' => true, 'capability_type' => 'post',
 	'has_archive' => false, 'hierarchical' => false, 
-	'menu_position' => null, 'supports' => array('editor','author','title', 'custom-fields', 'comments', 'thumbnail') );
+	'menu_position' => null, 'supports' => array('author','title', 'custom-fields', 'comments', 'thumbnail') );
 	register_post_type('shuoshuo',$args); 
 }
 
@@ -670,7 +671,7 @@ function my_custom_init_zl() {
 	'query_var' => true, 
 	'rewrite' => true, 'capability_type' => 'post',
 	'has_archive' => false, 'hierarchical' => false, 
-	'menu_position' => null, 'supports' => array('editor','author','title', 'custom-fields', 'comments') );
+	'menu_position' => null, 'supports' => array('editor','author','title', 'custom-fields', 'comments', 'thumbnail') );
 	register_post_type('patents',$args); 
 }
 
@@ -699,7 +700,7 @@ function my_custom_init_lw() {
 	'query_var' => true, 
 	'rewrite' => true, 'capability_type' => 'post',
 	'has_archive' => false, 'hierarchical' => false, 
-	'menu_position' => null, 'supports' => array('editor','author','title', 'custom-fields', 'comments') );
+	'menu_position' => null, 'supports' => array('editor','author','title', 'custom-fields', 'comments', 'thumbnail') );
 	register_post_type('articles',$args); 
 }
 
@@ -709,7 +710,7 @@ function my_custom_init_ky() {
 	
 	$labels = array( 'name' => '开源',
 	'singular_name' => '开源', 
-	'add_new' => '发表开源', 
+	'add_new' => '新建开源', 
 	'add_new_item' => '发表开源',
 	'edit_item' => '编辑开源', 
 	'new_item' => '新开源',
@@ -728,14 +729,44 @@ function my_custom_init_ky() {
 	'query_var' => true, 
 	'rewrite' => true, 'capability_type' => 'post',
 	'has_archive' => false, 'hierarchical' => false, 
-	'menu_position' => null, 'supports' => array('editor','author','title', 'custom-fields', 'comments') );
+	'menu_position' => null, 'supports' => array('editor','author','title', 'custom-fields', 'comments', 'thumbnail') );
 	register_post_type('opensource',$args); 
+}
+
+//相册 
+add_action('init', 'my_custom_init_album');
+function my_custom_init_album() {
+	
+	$labels = array( 'name' => '相册',
+	'singular_name' => '相册', 
+	'add_new' => '新建相册', 
+	'add_new_item' => '新建相册',
+	'edit_item' => '编辑相册', 
+	'new_item' => '新相册',
+	'view_item' => '查看相册',
+	'search_items' => '检索相册', 
+	'not_found' => '暂无相册',
+	'not_found_in_trash' => '没有已遗弃的相册',
+	'parent_item_colon' => '', 'menu_name' => '相册' );
+
+	$args = array( 'labels' => $labels,
+	'public' => true, 
+	'publicly_queryable' => true,
+	'show_ui' => true,
+	'show_in_menu' => true, 
+	'exclude_from_search' =>true,
+	'query_var' => true, 
+	'rewrite' => true, 'capability_type' => 'post',
+	'has_archive' => false, 'hierarchical' => false, 
+	'menu_position' => null, 'supports' => array('editor','author','title', 'custom-fields', 'comments', 'thumbnail', 'excerpt') );
+	register_post_type('album',$args); 
 }
 
 function my_custom_init_footer() {
 	echo '<script type="text/javascript" src="'.get_bloginfo('template_directory').'/js/script.js"></script>'."\n";
-	echo '<script type="text/javascript" color="230,116,116" opacity="0.8" zIndex="-2" count="100" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>';
+
 	if(is_home() && !is_paged()) {
+		echo '<script type="text/javascript" color="230,116,116" opacity="0.8" zIndex="-2" count="100" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>';
 		echo '<script type="text/javascript" src="'.get_bloginfo('template_directory').'/js/rainyday.js"></script>'."\n";
 			
 	} else if (is_single()) {
@@ -837,6 +868,31 @@ function cwp_insert_my_custom_css() {
 		rewind_posts();
 	}
 }
+
+//标题别名翻译
+if(akina_option('slug_translate')=='yes'){
+	add_action('publish_post', 'wp_slug_translate');
+	add_action('edit_post', 'wp_slug_translate');
+}
+
+/**
+ * 新文章自动使用ID作为别名
+ * 作用：即使你设置固定连接结构为 %postname% ，仍旧自动生成 ID 结构的链接
+ * https://www.wpdaxue.com/wordpress-using-post-id-as-slug.html
+ */
+// add_action( 'save_post', 'using_id_as_slug', 10, 2 );
+// function using_id_as_slug($post_id, $post){
+// 	global $post_type;	if($post_type=='album'){ //只对相册生效		// 如果是文章的版本，不生效
+// 		if (wp_is_post_revision($post_id))
+// 			return false;
+// 		// 取消挂载该函数，防止无限循环
+// 		remove_action('save_post', 'using_id_as_slug' );
+// 		// 使用文章ID作为文章的别名
+// 		wp_update_post(array('ID' => $post_id, 'post_name' => $post_id ));
+// 		// 重新挂载该函数
+// 		add_action('save_post', 'using_id_as_slug' );
+// 	}
+// }
 
 //code end 
 

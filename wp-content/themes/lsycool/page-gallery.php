@@ -9,13 +9,24 @@ wp_enqueue_style( 'gallery', get_template_directory_uri() . '/inc/css/gallery.cs
 
 <div class="baguetteBoxOne gallery">
         <?php 
-                query_posts("post_type=shuoshuo&post_status=publish&posts_per_page=-1");
+                query_posts("post_type=album&post_status=publish&posts_per_page=-1");
                 if (have_posts()) {
                         while (have_posts()) { the_post(); 
         ?>
                 <div class="box">
                         <div class="box-img">
-                                <?php the_post_thumbnail('Thumbnail'); ?>
+                                <?php if ( has_post_thumbnail() ) {
+                                                the_post_thumbnail('Thumbnail'); 
+                                        } else {
+                                                global $post;
+                                                $content = $post->post_content; preg_match_all('/<img.*?(?: |\\t|\\r|\\n)?src=[\'"]?(.+?)[\'"]?(?:(?: |\\t|\\r|\\n)+.*?)?>/sim', $content, $strResult, PREG_PATTERN_ORDER); $n = count($strResult[1]); 
+                                                if($n > 0){ 
+                                                        echo $strResult[1][0];     
+                                                } else {?>
+                                                        <img src="<?php bloginfo('template_url'); ?>/images/gallery_default.jpg" />
+                                <?php           }
+                                        }
+                                ?>
                         </div>
                         <a href="<?php the_permalink();?>">
                         <div class="box-content">

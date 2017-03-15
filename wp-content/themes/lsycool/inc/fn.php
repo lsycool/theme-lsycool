@@ -126,8 +126,6 @@ if ( akina_option('top_search') == 'no') { ?>
 
 <?php }?>
 
-
-
 <?php 
 // headerbg
 if ( akina_option('focus_img') == true ) { ?>
@@ -170,6 +168,114 @@ if ( akina_option('youset_logo') == true) { ?>
 }
 add_action('wp_head', 'customizer_css');
 
+//标题翻译
+abstract class Translate{
+    function curlRequest($url, $header = array(), $postData = ''){
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        if (!empty($header)) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        }
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        if (!empty($postData)) {
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, is_array($postData) ? http_build_query($postData) : $postData);
+        }
+        $curlResponse = curl_exec($ch);
+        $curlErrno = curl_errno($ch);
+        if ($curlErrno) {
+            $curlError = curl_error($ch);
+            throw new Exception($curlError);
+        }
+        curl_close($ch);
+        return $curlResponse;
+    }
+    abstract function translate($text);
+};
+
+class BingTranslator extends Translate{
+    private $_clientID = 'itbobotranslate';
+    private $_clientSecret = '/V2wGk57hwAHkVwyDbgyAsVuJRaDlJACZn7fxvikF8c=';
+    private $_fromLanguage = 'zh-CHS';
+    private $_toLanguage = 'en';
+
+    private $_authUrl = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/";
+    private $_scopeUrl = "http://api.microsofttranslator.com";
+    private $_grantType = "client_credentials";
+    private $_via = 0;
+
+    function __construct($via = 0){
+        $this->_via = empty($via) ? 0 : $via;
+    }
+    public function setLocal($loc){
+        $this->_fromLanguage = $loc;
+    }
+    public function setToLanguange($to){
+        $this->_toLanguage = $to;
+    }
+    public function translate($inputStr){
+      return $this->_viaApi($inputStr);
+    }
+
+    private function _getTokens(){
+        try{
+            $postData = array(
+                'grant_type' => $this->_grantType,
+                'scope' => $this->_scopeUrl,
+                'client_id' => $this->_clientID,
+                'client_secret' => $this->_clientSecret
+            );
+            $header = array('User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:6.0.1) Gecko/20100101 Firefox/6.0.1');
+            $response = $this->curlRequest($this->_authUrl, $header, $postData);
+            $jsonObj = json_decode($response);
+            return $jsonObj->access_token;
+        }
+    catch(Exception $e){
+            echo "Exception-" . $e->getMessage();
+        }
+    }
+
+    private function _viaApi($inputStr){
+        $params = "appId=&text=" . urlencode($inputStr) . "&to=" . $this->_toLanguage . "&from=" . $this->_fromLanguage;
+        $translateUrl = "http://api.microsofttranslator.com/v2/Http.svc/Translate?$params";
+        $accessToken = $this->_getTokens();
+        $authHeader = "Authorization: Bearer " . $accessToken;
+        $header = array($authHeader, "Content-Type: text/xml");
+        $curlResponse = $this->curlRequest($translateUrl, $header);
+    
+        $xmlObj = simplexml_load_string($curlResponse);
+        $translatedStr = '';
+        foreach ((array)$xmlObj[0] as $val) {
+            $translatedStr = $val;
+        }
+
+        return $translatedStr;
+    }
+};
+
+function wp_slug_translate($postID){
+    global $wpdb;
+    $tableposts = $wpdb->posts ;
+    $sql = "SELECT post_title,post_name FROM $tableposts WHERE ID=$postID";
+    $res = $wpdb->get_results($sql);  
+    $post_title = $res[0]->post_title;
+    $post_name = $res[0]->post_name;
+
+    if( sanitize_title($post_title) != $post_name ) {
+      if( !substr_count($post_name,'%') )
+        return true;
+    }
+    
+    $bing= new BingTranslator();
+    $wst_title = sanitize_title( $bing->translate($post_title) );
+    if( strlen($wst_title) < 2 ) {
+      $wst_title = $postID;
+    }
+    
+    $sql ="UPDATE ".$tableposts." SET `post_name` = '".$wst_title."' WHERE ID =$postID;";   
+    $res = $wpdb->query($sql);
+};
 
 
 /*

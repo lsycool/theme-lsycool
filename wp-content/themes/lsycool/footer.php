@@ -25,12 +25,11 @@
 
 	<footer id="colophon" class="site-footer" role="contentinfo">
 		<div class="site-info">
-			<?php esc_attr_e('Copyright ©', 'lsycool'); ?> <?php esc_attr_e(date('Y')); ?> by Shiyong.Liu <?php esc_attr_e('. All rights reserved.', 'lsycool'); ?>
-			<span class="sep"> | </span>
-			<?php printf( esc_html__( 'Theme: %1$s by %2$s.', 'lsycool' ), 'lsycool', '<a href="http://www.akina.pw" rel="Shiyong.Liu">Shiyong.Liu</a>' ); ?>
+			<?php esc_attr_e('Copyright ©', 'lsycool'); ?> <?php esc_attr_e(date('Y')); ?> by Shiyong. Liu <?php esc_attr_e(' All rights reserved.', 'lsycool'); ?>
 			<div class="footertext">
-			<p><?php echo akina_option('footer_info', ''); ?></p>
+			<p><?php echo akina_option('footer_info', ''); ?> | <?php echo akina_option('lsycool_icp', ''); ?></p>
 			</div>
+			<script type="text/javascript"><?php echo stripslashes(akina_option('analytics')); ?></script>
 		</div><!-- .site-info -->
 	</footer><!-- #colophon -->
 </div><!-- #page -->

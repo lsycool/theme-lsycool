@@ -15,7 +15,7 @@
 	<?php if ( has_post_thumbnail() ) { global $post; /*判断是否有缩略图，如果没有则查找文章中的第一张图，如果文章中没有图则使用默认图像*/?>
 		<a href="<?php the_permalink();?>"><div class="overlay"><i class="iconfont">&#xe61e;</i></div><?php the_post_thumbnail(); ?></a>
 		<?php } else { $content = $post->post_content; preg_match_all('/<img.*?(?: |\\t|\\r|\\n)?src=[\'"]?(.+?)[\'"]?(?:(?: |\\t|\\r|\\n)+.*?)?>/sim', $content, $strResult, PREG_PATTERN_ORDER); $n = count($strResult[1]); if($n > 0){ ?>
-		<a href="<?php the_permalink();?>"><div class="overlay"><i class="iconfont">&#xe61e;</i></div><img src="'.$strResult[1][0].'" /></a>
+		<a href="<?php the_permalink();?>"><div class="overlay"><i class="iconfont">&#xe61e;</i></div><img src="<?php echo $strResult[1][0]; ?>" /></a>
 		<?php } else {?>
 		<a href="<?php the_permalink();?>"><div class="overlay"><i class="iconfont">&#xe61e;</i></div><img src="<?php bloginfo('template_url'); ?>/images/default.jpg" /></a>
 		<?php } } ?>

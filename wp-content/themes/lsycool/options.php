@@ -111,7 +111,7 @@ function optionsframework_options() {
 		'name' => __('基本设置', 'options_framework_theme'),
 		'type' => 'heading');
 		
-		$options[] = array(
+	$options[] = array(
 		'name' => __("主题风格", 'akina'),
 		'desc' => __("14种颜色供选择，点击选择你喜欢的颜色，保存后前端展示会有所改变。", 'haoui'),
 		'id' => "theme_skin",
@@ -161,8 +161,14 @@ function optionsframework_options() {
 		'id' => 'akina_meta_description',
 		'std' => '',
 		'type' => 'text');	
-	
-		
+
+	$options[] = array(
+		'name' => __('备案号', 'options_framework_theme'),
+		'desc' => __('例如： 湘ICP备15008888号-1。', 'options_framework_theme'),
+		'id' => 'lsycool_icp',
+		'std' => '',
+		'type' => 'text');	
+			
 	$options[] = array(
 		'name' => __('是否开启多说插件支持', 'options_framework_theme'),
 		'desc' => __('如果使用多说插件，请开启此选项;使用自带评论请关闭', 'options_framework_theme'),
@@ -179,6 +185,16 @@ function optionsframework_options() {
 			'yes' => __('开启', ''),
 			'no' => __('关闭', '')
 		));	
+
+	$options[] = array(
+		'name' => __('标题别名翻译', 'akina'),
+		'id' => 'slug_translate',
+		'std' => "yes",
+		'type' => "radio",
+		'options' => array(
+			'yes' => __('开启', ''),
+			'no' => __('关闭', '')
+	));	
 		
 	$options[] = array(
 		'name' => __('评论收缩', 'akina'),
@@ -215,6 +231,13 @@ function optionsframework_options() {
 		'desc' => __('页脚说明文字', 'options_framework_theme'),
 		'id' => 'footer_info',
 		'std' => 'Carpe Diem and Do what I like',
+		'type' => 'textarea');	
+
+	$options[] = array(
+		'name' => __('站长统计代码', 'options_framework_theme'),
+		'desc' => __('这个可以到百度统计或者cnzz上申请', 'options_framework_theme'),
+		'id' => 'analytics',
+		'std' => '突如其来的装逼，让我无法呼吸',
 		'type' => 'textarea');	
 
 		
@@ -538,10 +561,6 @@ function optionsframework_options() {
 		'id' => 'archives_link',
 		'std' => '#',
 		'type' => 'text');
-		
-		
-		
-		
-
+	
 	return $options;
 }
