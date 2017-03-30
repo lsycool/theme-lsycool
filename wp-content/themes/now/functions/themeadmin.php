@@ -33,7 +33,7 @@ function disable_dashboard_widgets() {
 add_action('admin_menu', 'themeidea_admin_menu');
 
 function themeidea_admin_menu() {
-	add_theme_page(__( '友情提示', 'themeidea' ), __( '友情提示', 'themeidea' ), 'edit_themes', basename(__FILE__), 'themeidea_settings_page');
+	//add_theme_page(__( '友情提示', 'themeidea' ), __( '友情提示', 'themeidea' ), 'edit_themes', basename(__FILE__), 'themeidea_settings_page');
 	add_action( 'admin_init', 'register_themeidea_settings' );
 }
 

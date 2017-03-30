@@ -201,6 +201,8 @@ add_action( 'widgets_init', 'akina_widgets_init' );
  */
 function akina_scripts() {
 	wp_enqueue_style( 'akina-style', get_stylesheet_uri() );
+
+	wp_enqueue_style( 'baguetteBox', get_template_directory_uri() . '/inc/css/baguetteBox.css', '', true );
 	
 	wp_enqueue_script( 'jq', get_template_directory_uri() . '/js/jquery.min.js', array(), '2016429', true ); 
 	
@@ -522,6 +524,7 @@ function bolo_after_wp_tiny_mce($mce_settings) {
         QTags.addButton('xhx', '下划线', "<u>", "</u>");
         QTags.addButton('embed', '文章引用', "[mimelove_insert_post ids=文章id]");
         QTags.addButton('prettyCode', '代码高亮', "<pre class='prettyprint linenums'>", "</pre>");
+        QTags.addButton('wbr', '软换行', "<wbr>");
 	function bolo_QTnextpage_arg1() {
 	}  
 	</script>  
@@ -768,6 +771,7 @@ function my_custom_init_footer() {
 	if(is_home() && !is_paged()) {
 		echo '<script type="text/javascript" color="230,116,116" opacity="0.8" zIndex="-2" count="100" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>';
 		echo '<script type="text/javascript" src="'.get_bloginfo('template_directory').'/js/rainyday.js"></script>'."\n";
+		echo '<script type="text/javascript" src="'.get_bloginfo('template_directory').'/js/notice_scroll.js"></script>'."\n";
 			
 	} else if (is_single()) {
 		// echo '<script type="text/javascript" src="'.get_bloginfo('template_directory').'/js/prettify.js"></script>'."\n";
@@ -794,14 +798,14 @@ add_action('wp_head','my_custom_init_header');
  * 禁用快速编辑功能
  * 否则会导致 Markdown 格式的文章内容变为 HTML 代码
  */
-// add_filter( 'post_row_actions', 'power_remove_row_actions', 10, 2 );
-// function power_remove_row_actions( $actions )
-// {
-//     if( get_post_type() === 'post' ) {
-//     unset( $actions['inline hide-if-no-js'] );
-//     }
-//     return $actions;
-// }
+/*add_filter( 'post_row_actions', 'power_remove_row_actions', 10, 2 );
+function power_remove_row_actions( $actions )
+{
+    if( get_post_type() === 'post' ) {
+    unset( $actions['inline hide-if-no-js'] );
+    }
+    return $actions;
+}*/
 
 //修改头像服务器到多说
 function mytheme_get_avatar($avatar) {
@@ -870,9 +874,40 @@ function cwp_insert_my_custom_css() {
 }
 
 //标题别名翻译
-if(akina_option('slug_translate')=='yes'){
+if(akina_option('slug_translate')=='yes') {
 	add_action('publish_post', 'wp_slug_translate');
 	add_action('edit_post', 'wp_slug_translate');
+}
+
+function custom_upload_directory( $uploads ) {
+	$id = $_REQUEST['post_id'];
+	$parent = get_post( $id )->post_parent;
+	$subdir = '';
+	if( "album" == get_post_type( $id ) || "album" == get_post_type( $parent ) ) {
+		$subdir = 'album';
+	} else if ( "articles" == get_post_type( $id ) || "articles" == get_post_type( $parent )) {
+		$subdir = 'articles';
+	} else if ( "patents" == get_post_type( $id ) || "patents" == get_post_type( $parent )) {
+		$subdir = 'patents';
+	} else if ( "opensource" == get_post_type( $id ) || "opensource" == get_post_type( $parent )) {
+		$subdir = 'opensource';
+	} 
+	$uploads['subdir'] = $subdir;
+	$uploads['path'] = $uploads['basedir'].DIRECTORY_SEPARATOR.$subdir.DIRECTORY_SEPARATOR.$id;
+	$uploads['url'] = $uploads['baseurl'].'/'.$subdir.'/'.$id;
+	return $uploads;
+}
+add_filter( 'upload_dir', 'custom_upload_directory' );
+
+/**
+ * WordPress 设置图片的默认显示方式（尺寸/对齐方式/链接到）
+ * https://www.wpdaxue.com/image-default-size-align-link-type.html
+ */
+add_action( 'after_setup_theme', 'default_attachment_display_settings' );
+function default_attachment_display_settings() {
+	update_option( 'image_default_align', 'none' );
+	update_option( 'image_default_link_type', 'none' );
+	update_option( 'image_default_size', 'large' );
 }
 
 /**
@@ -880,19 +915,21 @@ if(akina_option('slug_translate')=='yes'){
  * 作用：即使你设置固定连接结构为 %postname% ，仍旧自动生成 ID 结构的链接
  * https://www.wpdaxue.com/wordpress-using-post-id-as-slug.html
  */
-// add_action( 'save_post', 'using_id_as_slug', 10, 2 );
-// function using_id_as_slug($post_id, $post){
-// 	global $post_type;	if($post_type=='album'){ //只对相册生效		// 如果是文章的版本，不生效
-// 		if (wp_is_post_revision($post_id))
-// 			return false;
-// 		// 取消挂载该函数，防止无限循环
-// 		remove_action('save_post', 'using_id_as_slug' );
-// 		// 使用文章ID作为文章的别名
-// 		wp_update_post(array('ID' => $post_id, 'post_name' => $post_id ));
-// 		// 重新挂载该函数
-// 		add_action('save_post', 'using_id_as_slug' );
-// 	}
-// }
+/*
+add_action( 'save_post', 'using_id_as_slug', 10, 2 );
+function using_id_as_slug($post_id, $post){
+	global $post_type;	if($post_type=='album'){ //只对相册生效		// 如果是文章的版本，不生效
+		if (wp_is_post_revision($post_id))
+			return false;
+		// 取消挂载该函数，防止无限循环
+		remove_action('save_post', 'using_id_as_slug' );
+		// 使用文章ID作为文章的别名
+		wp_update_post(array('ID' => $post_id, 'post_name' => $post_id ));
+		// 重新挂载该函数
+		add_action('save_post', 'using_id_as_slug' );
+	}
+}
+*/
 
 //code end 
 

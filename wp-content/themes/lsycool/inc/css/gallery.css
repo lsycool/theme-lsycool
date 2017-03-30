@@ -65,7 +65,7 @@
 }
 
 .baguetteBoxOne {
-	width:1160px; 
+	width:93%; 
 	margin:36px auto;
 }
 
@@ -105,7 +105,7 @@
 }
 .gallery .box .description{
     font-size: 12px;
-    margin: 0 0 5px 0;
+    margin: 20px 0 5px 0;
     color: #fff;
 }
 

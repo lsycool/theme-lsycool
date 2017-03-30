@@ -612,7 +612,7 @@ if(!function_exists('get_postvideo_link')){
 **/
 
 if(!function_exists('get_theme_gallery')){
-	function get_theme_gallery($size = 'gallery-big'){
+	function get_theme_gallery($size = 'gallery-big') {
 
 		/* Get the page content and extracts [gallery shortcode] */
         $content = get_the_content('');
@@ -623,15 +623,13 @@ if(!function_exists('get_theme_gallery')){
 	        /* Gallery Shortcode */
 	        $gallery_shortcode = $matches[0];
 
-
 	        /* Add correct thumbnail size before generating shortcode */
 	        if (preg_match("#size=\"[a-z]*\"#", $gallery_shortcode, $matches)) {
 	            $gallery_shortcode = str_replace($matches[0], '', $gallery_shortcode);
-	            echo $gallery_shortcode;
+	            // echo $gallery_shortcode;
 	        }
 	        
 	        $gallery_shortcode = str_replace(']', " size=\"{$size}\"]", $gallery_shortcode);
-
 
 	        /* Add correct link attribute (none) */
 	        if (preg_match("#link=\"[a-z]*\"#", $gallery_shortcode, $matches)) {
@@ -639,7 +637,6 @@ if(!function_exists('get_theme_gallery')){
 	        }
 	        
 	        $gallery_shortcode = str_replace(']', ' link="file"]', $gallery_shortcode);
-
 
 	        /* Generate Gallery Shortcode and prepare for output */
 	        $gallery = do_shortcode($gallery_shortcode);
@@ -695,9 +692,9 @@ if(!function_exists('now_comment')){
                     </p>
 
                     <?php if ($comment->comment_approved == '0') : ?>
-						<em class="comment-awaiting-moderation"><?php _e('Your comment is awaiting moderation.', 'now'); ?></em>
-						<br />
-					<?php endif; ?>
+<!-- 						<em class="comment-awaiting-moderation"><?php _e('Your comment is awaiting moderation.', 'now'); ?></em>
+						<br /> -->
+ 		    		<?php endif; ?>
 
                     <?php comment_text(); ?>
                     

@@ -56,7 +56,7 @@ foreach($myposts as $post) :
 </center>
 <center>
 <div style="text-algin: center; font-size: 11px">Powered by <strong><a href="https://mrju.cn/221.html" target="_blank">免插件SiteMap</a></strong>&nbsp;
-&copy; <?php echo date('Y'); ?> <a href="<?php bloginfo('url');?>/"><?php bloginfo('name');?></a> 版权所有.<br /><br /></div>
+&copy; <?php echo date('Y'); ?> <a href="<?php bloginfo('url');?>/"><?php bloginfo('name'); wp_reset_query();?></a> 版权所有.<br /><br /></div>
 </center>
 </body>
 </html>

@@ -262,7 +262,7 @@ $(function(){
                     scrollTop: loadmoreOffest.top-60
                 }, 800);
 
-			    $("#loadMore").text('Load More');
+			    $("#loadMore").text('加载更多');
 
             }
         }); 
@@ -276,6 +276,45 @@ $(function(){
 
 
 jQuery(document).ready(function($) {
+
+	// Load animations max timeout
+	if ( jQuery( '.loading-animations').length ) 
+	{
+		setTimeout(function() {
+			if (!siteLoaded) {
+				jQuery( '.spinner-container').addClass( 'content-loaded' );
+				setTimeout( function() {
+					jQuery( '.spinner-container').hide(0);
+					jQuery( '.loading-animations').addClass( 'content-loaded' );
+				}, 400 );
+			}
+		}, 3000);
+	} 
+
+	// Check height
+	if ($('body').outerHeight() < $(window).outerHeight()) {
+		$('body').addClass('increase-height');
+	}
+
+	// OffLoad animations
+    $('.read-more a, .blog-title a, #header h1 a, #contact-form input[type="submit"]').click(function(e) {
+    	if ( $( '.loading-animations').length )
+		{
+			if ($(this).hasClass('comment-reply-link')) { return true; }
+			if ($(this).prop('rel') == 'nofollow') { return true; }
+            e.preventDefault();
+            var anchor = $(this), h;
+            h = anchor.attr('href');
+			jQuery('.loading-animations').removeClass('content-loaded');
+			jQuery('.spinner-container').show(0);
+			setTimeout(function() {
+				jQuery('.spinner-container').removeClass('content-loaded');
+				setTimeout(function() {
+		            window.location = h;
+		        }, 390);
+			}, 10);
+		}
+    });
 
 	/**
 	*
@@ -306,8 +345,13 @@ jQuery(document).ready(function($) {
 		$(this).toggleClass('hover');
 	});
 
-	/* Sidebar multi-level menu */
+	/* Prevent other events */
+	$(' .comment-reply-link' ).bind( 'click', function( event ) {
+		event.preventDefault();
+		event.stopPropagation();
+	});
 	
+	/* Sidebar multi-level menu */
 	$('.nav-child-container').bind(eventClick, function(event) {
 		event.preventDefault();
 		var $this = $(this);
@@ -325,8 +369,8 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+
 	/* Sidebar Functionality */
-	
 	var opened = false;
 	var trigger_url = false;
 	var sidebar_info = ( $('#author-profile').length > 0 ) ? true : false;
@@ -378,8 +422,40 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-	/* Search Trigger */
+	$('#content').bind(eventClick, function(event) {
 
+		if (opened) {
+
+			$stickyContainer = $('.fixed-header #header');
+			if($stickyContainer.length > 0) {
+				var headerOffset = $('#header').offset();
+				headerOffset = headerOffset.top;
+	
+				setTimeout(function() {
+					$stickyContainer.css({
+						'margin-top': 0
+					});
+				}, 500);
+				
+			}
+
+			$('#content-container').toggleClass('active');
+			$('#sidemenu').toggleClass('active');
+			
+			opened = false;
+			setTimeout(function() {
+				$('#sidemenu-container').removeClass('active');
+			}, 450);
+
+			if (sidebar_info) {
+				trigger_url = true;
+			} else {
+				trigger_url = false;
+			}
+		}
+	});
+
+	/* Search Trigger */
 	var closeEnable = false;
 	$('#search-trigger').bind(eventClick, function(event) {
 		$('#search-form').addClass('active');
@@ -406,8 +482,28 @@ jQuery(document).ready(function($) {
 		
 
 	$('.nav a').bind('click', function(event) {
+
 		event.preventDefault();
-		if (trigger_url) {
+
+		if ($(this).siblings('.sub-menu').length > 0) {
+
+			var ul = $(this).siblings('.sub-menu');
+			var nav_child = $(this).siblings('.nav-child-container');
+			var ulChildrenHeight = ul.children().length * 46;
+			$(this).parent().parent().find('li').removeClass('current-menu-item');
+			$(this).parent().toggleClass('current-menu-item');
+
+			if( !nav_child.hasClass('active') ) {
+				nav_child.toggleClass('active');
+				ul.toggleClass('active');
+				ul.height(ulChildrenHeight + 'px');
+			}else{
+				nav_child.toggleClass('active');
+				ul.toggleClass('active');
+				ul.height(0);
+			}
+		} else	if (trigger_url) {
+
 			var path = $(this).attr('href');
 			if ($(this).attr('target') == '_blank') {
 				$('#content-container').toggleClass('active');
@@ -543,4 +639,23 @@ jQuery(document).ready(function($) {
 	**/
 
 	$('table').addClass('responsive');
+
+	function scrollToTopBottom() {
+		var $window = $( window ),
+			$button = $( '#top-dock' ),
+			$button2 = $( '#down-dock' );
+
+		$window.scroll( function () {
+			$button[$window.scrollTop() > 100 ? 'removeClass' : 'addClass']( 'hidden' );
+			if ((300 + $(window).scrollTop()) < ($(document).height() - $(window).height())) {
+				$button2['removeClass']( 'hidden' );				
+			} else {
+				$button2['addClass']( 'hidden' );
+				$button['addClass']( 'hidden' );
+			}
+
+		} );
+	}
+	scrollToTopBottom();
+
 });

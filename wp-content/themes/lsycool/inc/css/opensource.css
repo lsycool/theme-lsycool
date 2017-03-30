@@ -1,0 +1,71 @@
+.blank {
+    margin-top: 60px;
+}
+
+#box-patent{
+	border-bottom: 1px dashed #ddd;
+	line-height: 22px !important;
+	overflow: hidden;
+	display: block;
+	color: #3E3E3E;
+	padding-bottom: 10px;
+	font: normal 15px/1.5 'Tahoma', 'simsun';
+}
+
+#patent-img-left{
+	display: block;
+	text-align: center;
+	padding-bottom: 5px;
+}
+
+#patent-img-left img{
+	border: 1px solid #7b7b7b;
+	max-width: 200px;
+	height: auto;
+}
+
+#box-patent h3 {
+	padding-top: 20px;
+	padding-bottom: 15px;
+	color: #737373;
+	margin: 0;
+	font-family: miranafont,"Hiragino Sans GB",STXihei,"Microsoft YaHei",SimSun,sans-serif;
+}
+
+#box-patent h3:before {
+	content: "[";
+	margin-right: 5px;
+	color: #FF6D6D;
+	font-size: 25px;
+}
+
+#box-patent h3:after {
+	content: "]";
+	margin-left: 5px;
+	color: #FF6D6D;
+	font-size: 25px;	
+}
+
+label{
+	color: #7C7C7C;	
+}
+
+a{
+	color: #15c;
+	cursor: pointer;
+	font-family: "Microsoft YaHei","微软雅黑",tahoma,arial,simsun,"宋体";
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#patent-info-right{
+	list-style: none;
+	margin: 0;
+	padding: 10px 0px 3px;
+}
+
+#petent-class{
+	margin-right: 8px;
+}

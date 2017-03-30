@@ -9,13 +9,17 @@
 
 get_header(); 
 wp_enqueue_style( 'album', get_template_directory_uri() . '/inc/css/album.css', '', true );
-wp_enqueue_style( 'baguetteBox', get_template_directory_uri() . '/inc/css/baguetteBox.css', '', true );
 ?>
 
 	<div class="baguetteBoxOne album">
 
 		<?php while ( have_posts() ) : the_post();?>
-			<?php the_content(); ?>
+			<?php 
+				$content = get_the_content(); 
+				preg_replace('/<p>\s*(<img .* \/>)\s*<\/p>/iU', '\1', $content); //去除掉标签中的P标签
+				echo $content;
+			
+			?>
 			<?php
 				wp_link_pages( array(
 					'before' => '<div class="page-links">' . __( 'Pages:', 'ondemand' ),
@@ -67,6 +71,5 @@ wp_enqueue_style( 'baguetteBox', get_template_directory_uri() . '/inc/css/baguet
 
 <?php
 wp_reset_query();
-get_sidebar();
 get_footer();
 ?>

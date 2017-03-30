@@ -36,6 +36,7 @@ if(!function_exists('register_utlimate_scripts_styles')){
 		wp_register_script('responsivetables', get_template_directory_uri() . '/js/plugins/responsivetables.js', array(), '', true);
 		wp_register_script('prism', get_template_directory_uri() . '/js/plugins/prism.js', array(), '', true);
 		wp_register_script('sticky', get_template_directory_uri() . '/js/plugins/sticky.js', array(), '', true);
+		// wp_register_script('addtohomescreen', get_template_directory_uri() . '/js/plugins/addtohomescreen.min.js', array(), '', true);
 
 		/* Main Scripts */
 		wp_register_script('script', get_template_directory_uri() . '/js/script.js', array(), '', true);
@@ -54,7 +55,8 @@ if(!function_exists('register_utlimate_scripts_styles')){
 		wp_enqueue_script('responsivetables');
 		wp_enqueue_script('prism');
 		wp_enqueue_script('sticky');
-
+		// wp_enqueue_script('addtohomescreen');
+		
 		/* Main Scripts */
 		wp_enqueue_script('script');
 
@@ -95,8 +97,10 @@ if(!function_exists('register_utlimate_scripts_styles')){
 	add_action('wp_enqueue_scripts', 'register_utlimate_scripts_styles');
 }
 
-
-
+/**
+ * ajax-comments.
+ */
+require(get_template_directory() .'/ajax-comment/main.php');
 
 /**
 * 
@@ -199,10 +203,86 @@ if(!function_exists('custom_body_class')){
 			$classes[] = 'fixed-header';
 		}
 
+		$classes[] ='loading-animations';
+		$classes[] ='content-loaded';
+
 		return $classes;
 	}
 	
 	add_action( 'body_class', 'custom_body_class');
+}
+
+//首页文章内容字数截断
+function the_content_replace( $content ) {
+  if (is_home()) {
+    return mb_strimwidth( get_the_content(), 0, 260 );
+  } else {
+    return $content;
+  }
+}
+add_filter( 'the_content', 'the_content_replace' );
+
+//新建说说功能 
+add_action('init', 'my_custom_init');
+function my_custom_init() {
+	
+	$labels = array( 'name' => '说说',
+	'singular_name' => '说说', 
+	'add_new' => '发表说说', 
+	'add_new_item' => '发表说说',
+	'edit_item' => '编辑说说', 
+	'new_item' => '新说说',
+	'view_item' => '查看说说',
+	'search_items' => '?索说说', 
+	'not_found' => '暂无说说',
+	'not_found_in_trash' => '没有已遗弃的说说',
+	'parent_item_colon' => '', 'menu_name' => '说说' );
+
+	$args = array( 'labels' => $labels,
+	'public' => true, 
+	'publicly_queryable' => true,
+	'show_ui' => true,
+	'show_in_menu' => true, 
+	'exclude_from_search' =>true,
+	'query_var' => true, 
+	'rewrite' => true, 'capability_type' => 'post',
+	'has_archive' => false, 'hierarchical' => false, 
+	'menu_position' => null, 'supports' => array('author','title', 'custom-fields', 'comments'));
+	register_post_type('shuoshuo',$args); 
+	// unregister_post_type('shuoshuo-mobile',$args); 
+}
+
+/*
+为特定文章添加特定css最简单的方式.
+*/
+/*添加自定义CSS的meta box*/
+add_action('admin_menu', 'cwp_add_my_custom_css_meta_box');
+/*保存自定义CSS的内容*/
+add_action('save_post', 'cwp_save_my_custom_css');
+/*将自定义CSS添加到特定文章(适用于Wordpress中文章、页面、自定义文章类型等)的头部*/
+add_action('wp_head','cwp_insert_my_custom_css');
+function cwp_add_my_custom_css_meta_box() {
+	add_meta_box('my_custom_css', '自定义CSS', 'cwp_output_my_custom_css_input_fields', 'post', 'normal', 'high');
+	add_meta_box('my_custom_css', '自定义CSS', 'cwp_output_my_custom_css_input_fields', 'page', 'normal', 'high');
+}
+function cwp_output_my_custom_css_input_fields() {
+	global $post;
+	echo '<input type="hidden" name="my_custom_css_noncename" id="my_custom_css_noncename" value="'.wp_create_nonce('custom-css').'" />';
+	echo '<textarea name="my_custom_css" id="my_custom_css" rows="5" cols="30" style="width:100%;">'.get_post_meta($post->ID,'_my_custom_css',true).'</textarea>';
+}
+function cwp_save_my_custom_css($post_id) {
+	if (!wp_verify_nonce($_POST['my_custom_css_noncename'], 'custom-css')) return $post_id;
+	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return $post_id;
+	$my_custom_css = $_POST['my_custom_css'];
+	update_post_meta($post_id, '_my_custom_css', $my_custom_css);
+}
+function cwp_insert_my_custom_css() {
+	if (is_page() || is_single()) {
+		if (have_posts()) : while (have_posts()) : the_post();
+		echo '<style type="text/css">'.get_post_meta(get_the_ID(), '_my_custom_css', true).'</style>';
+		endwhile; endif;
+		rewind_posts();
+	}
 }
 
  ?>

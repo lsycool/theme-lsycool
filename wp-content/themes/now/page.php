@@ -17,7 +17,7 @@
         		
 	        		<?php while(have_posts()): the_post(); ?>
 	        		
-		        		<h2 style="margin-bottom: 0;"><?php the_title(); ?></h2>
+		        		<h2 id="page_title" style="margin-bottom: 0;"><?php the_title(); ?></h2>
 
         				<?php 
 
@@ -54,7 +54,11 @@ HTML;
 
         	</div>
 
-			<?php if(comments_open() && get_option('now_comments_page', 'false') == 'true') comments_template('', true); ?>
+			<?php if(comments_open() && get_option('now_comments_page', 'false') == 'true') {?>
+				<div id="comments-area" style="padding:0 10px;">
+				<?php comments_template('', true); ?>
+				</div>
+			<?php } ?>
         </div>
 
     </section>

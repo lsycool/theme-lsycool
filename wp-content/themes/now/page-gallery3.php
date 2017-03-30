@@ -31,7 +31,9 @@
 	        <?php if (current_user_can('edit_post')): ?>
 
 			<div class="text-center" style="margin: 30px 0 40px;">
-				<?php echo '<a class="button full-width radius" href="' . get_edit_post_link() . '">' . __('Edit This', 'now') . '</a>'; ?>
+				<?php 
+					echo '<a class="button full-width radius" href="' . get_edit_post_link() . '">' . __('Edit This', 'now') . '</a>';
+					 ?>
 			</div>
 
 	        <?php endif; ?>

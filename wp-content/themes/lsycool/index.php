@@ -15,9 +15,24 @@ get_header();
 ?>
    
 	<div class="notice">
-	   <i class="iconfont">&#xe607;</i> : 
-		<div class="notice-content">
-		<?php echo akina_option('notice_title');?>
+	    <i class="iconfont" style="line-height: 1.2em;">&#xe607;:</i> 
+		<div class="notice-content" style="overflow:hidden; height: 1.5em;">
+			<ul style="margin-left: 16px; padding-left: 30px;">
+			<?php
+				// $array_notice = array();
+				for ($i=0; $i < 3; $i++) { 
+					echo '<li style="list-style-type: none; line-height: 2.6rem; overflow:hidden;">';
+					if (0 == $i) {
+						echo akina_option('notice_title');
+					} else {
+						echo akina_option('notice_title'.$i);
+						// echo $array_notice[$i];			
+					}
+					echo '</li>';
+				} 
+			?>
+			<?php //echo akina_option('notice_title');?>
+			</ul>
 		</div>
 	</div>
 	

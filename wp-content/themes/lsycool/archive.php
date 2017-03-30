@@ -10,7 +10,7 @@
 get_header(); ?>
 
 	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
+		<main id="main" class="site-main" role="main" style="padding-top: 10px;">
 
 		<?php
 		if ( have_posts() ) : ?>
@@ -28,30 +28,34 @@ get_header(); ?>
 
 			<?php
 			/* Start the Loop */
-			while ( have_posts() ) : the_post(); 
+				while ( have_posts() ) : the_post(); 
 			?>
 			
-			<?php 
+			<?php
 					/*
 					* 如果选择分类ID  那么这个页面将输出works样式
 					*/
-				$cat_array = akina_option('works_multicheck');
-				$huluwa = array();
-				foreach ($cat_array as $key=>$works_multicheck){
-					if ($works_multicheck==1) $huluwa[]=$key;
-				} 				
-				if ( is_category($huluwa) ){
-					include(TEMPLATEPATH . '/template-parts/works-list.php');
-				} else {
-					/*
-					* Include the Post-Format-specific template for the content.
-					* If you want to override this in a child theme, then include a file
-					* called content-___.php (where ___ is the Post Format name) and that will be used instead.
-					*/
-					get_template_part( 'template-parts/content', get_post_format() );
-				}
+					$cat_array = akina_option('works_multicheck');
+					$huluwa;
+					foreach ($cat_array as $key=>$works_multicheck){
+						if ($works_multicheck==1) {
+							$huluwa=$key;
+							break;
+							// echo $key;
+						}
+					} 				
+					if ( $huluwa ){
+						include(TEMPLATEPATH . '/template-parts/works-list.php');
+					} else {
+						/*
+						* Include the Post-Format-specific template for the content.
+						* If you want to override this in a child theme, then include a file
+						* called content-___.php (where ___ is the Post Format name) and that will be used instead.
+						*/
+						get_template_part( 'template-parts/content', get_post_format() );
+					}
 				
-				endwhile; ?>
+			endwhile; ?>
 				<div class="clearer"></div>
 
 			<nav class="navigator">

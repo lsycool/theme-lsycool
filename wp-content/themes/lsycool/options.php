@@ -205,6 +205,16 @@ function optionsframework_options() {
 			'yes' => __('开启', ''),
 			'no' => __('关闭', '')
 		));	
+
+	$options[] = array(
+		'name' => __('留言页最近访友', 'akina'),
+		'id' => 'recent-friend',
+		'std' => "yes",
+		'type' => "radio",
+		'options' => array(
+			'yes' => __('开启', ''),
+			'no' => __('关闭', '')
+		));
 		
 	$options[] = array(
 		'name' => __('是否开启preloader动画', 'akina'),
@@ -281,12 +291,26 @@ function optionsframework_options() {
 		'type' => 'checkbox');	
 
 	$options[] = array(
-		'name' => __('顶部公告内容', 'options_framework_theme'),
-		'desc' => __('顶部公告内容', 'options_framework_theme'),
+		'name' => __('顶部公告内容1', 'options_framework_theme'),
+		'desc' => __('顶部公告内容1', 'options_framework_theme'),
 		'id' => 'notice_title',
-		'std' => '我很荣幸的启用了Akina主题',
-		'type' => 'text');		
-		
+		'std' => '我很荣幸的启用了lsycool主题',
+		'type' => 'text');	
+
+	$options[] = array(
+	'name' => __('顶部公告内容2', 'options_framework_theme'),
+	'desc' => __('顶部公告内容2', 'options_framework_theme'),
+	'id' => 'notice_title1',
+	'std' => '我很荣幸的启用了lsycool主题',
+	'type' => 'text');			
+
+	$options[] = array(
+	'name' => __('顶部公告内容3', 'options_framework_theme'),
+	'desc' => __('顶部公告内容3', 'options_framework_theme'),
+	'id' => 'notice_title2',
+	'std' => '我很荣幸的启用了lsycool主题',
+	'type' => 'text');			
+
 	$options[] = array(
 		'name' => __('首页列表特色图样式', 'akina'),
 		'id' => 'list_type',
@@ -488,8 +512,6 @@ function optionsframework_options() {
 		'type' => 'text');		
 		
 	
-	
-
 	//自定义页面
 	$options[] = array(
 		'name' => __('其他', 'options_framework_theme'),

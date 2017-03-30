@@ -1,7 +1,7 @@
 <?php /*
 Template Name: galllery
 author: lsycool
-url: http://www.mizuiren.com/141.html
+url: http://www.lsycool.cn
 */
 get_header(); 
 wp_enqueue_style( 'gallery', get_template_directory_uri() . '/inc/css/gallery.css', '', true );
@@ -32,7 +32,7 @@ wp_enqueue_style( 'gallery', get_template_directory_uri() . '/inc/css/gallery.cs
                         <div class="box-content">
                                 <h4 class="title"><?php the_title(); ?></h4>
                                 <p class="description">
-                                        <?php the_excerpt(); ?>
+                                        <?php echo get_the_excerpt(); ?>
                                 </p>
                         </div>
                         </a>

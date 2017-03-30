@@ -27,7 +27,7 @@
 		<div class="site-info">
 			<?php esc_attr_e('Copyright ©', 'lsycool'); ?> <?php esc_attr_e(date('Y')); ?> by Shiyong. Liu <?php esc_attr_e(' All rights reserved.', 'lsycool'); ?>
 			<div class="footertext">
-			<p><?php echo akina_option('footer_info', ''); ?> | <?php echo akina_option('lsycool_icp', ''); ?></p>
+			<p><?php echo akina_option('footer_info', ''); ?> | <a href="http://www.miitbeian.gov.cn/" target="_blank"><?php echo akina_option('lsycool_icp', ''); ?></a> | <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43010502000349"><img style="max-width: 17px;" src="<?php echo get_template_directory_uri()?>/images/beian.png"/>湘公网安备 43010502000349号</a></p>
 			</div>
 			<script type="text/javascript"><?php echo stripslashes(akina_option('analytics')); ?></script>
 		</div><!-- .site-info -->
@@ -42,6 +42,12 @@
 	      <i class="fa fa-home fa-fw" aria-hidden="true"></i>
 	        <span class="back-home">
 	          返回主页看更多 
+	        </span>
+	    </a>
+	    <a class="comment" href="#colophon">
+	      <i class="fa fa-commenting fa-fw" aria-hidden="true"></i>
+	        <span class="back-comment">
+	          进行评论 
 	        </span>
 	    </a>
         <a class="reward">

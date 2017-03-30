@@ -30,5 +30,7 @@ get_header(); ?>
 	
 
 <?php
+wp_reset_query();
 get_sidebar();
 get_footer();
+?>

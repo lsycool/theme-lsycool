@@ -24,15 +24,15 @@
 		</div>
 
 		<div class="comments-main">
-		 <h3 id="comments-list-title">Comments | <span class="noticom"><?php comments_popup_link('NOTHING', '1 条评论', '% 条评论'); ?> </span></h3> 
-		<div id="loading-comments"><span></span></div>
+			<h3 id="comments-list-title">Comments | <span class="noticom"><?php comments_popup_link('NOTHING', '1 条评论', '% 条评论'); ?> </span></h3> 
+			<div id="loading-comments"><span></span></div>
 			<?php if(have_comments()): ?>
 
 				<ul class="commentwrap">
 					<?php wp_list_comments('type=comment&callback=akina_comment_format'); ?>	
 				</ul>
 
-          <nav id="comments-navi">
+        	<nav id="comments-navi">
 				<?php paginate_comments_links('prev_text=<&next_text=>');?>
 			</nav>
 

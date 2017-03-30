@@ -22,9 +22,9 @@ wp_enqueue_style( 'shuoshuo', get_template_directory_uri() . '/inc/css/shuoshuo.
  			<div id="makecomments-<?php the_ID()?>" class="makecomments">
 				<?php get_template_part('inc/comments-shuoshuo');; ?>
  			</div>
- 			<?php endwhile;endif; ?>
  		</li>
+		<?php endwhile;endif; ?>
  </ul>
 </div>
-<?php get_footer();?>
+<?php wp_reset_query(); get_footer();?>
 

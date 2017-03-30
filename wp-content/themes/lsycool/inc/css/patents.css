@@ -1,0 +1,45 @@
+#box-patent{
+	border-bottom: solid 1px #c6c6c6;
+	line-height: 22px !important;
+	overflow: hidden;
+	display: block;
+	font: normal 12px/1.5 'Tahoma', 'simsun';
+	color: #3E3E3E;
+}
+
+#patent-img-left{
+	padding: 20px 15px 20px 0;
+	float: left;
+	display: inline;
+}
+
+#patent-img-left img{
+	float: left;
+	border: 1px solid #7b7b7b;
+	max-width: 86px;
+	height: auto;
+}
+
+label{
+	color: #7C7C7C;	
+}
+
+a{
+	color: #15c;
+	cursor: pointer;
+	font-family: "Microsoft YaHei","微软雅黑",tahoma,arial,simsun,"宋体";
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#patent-info-right{
+	padding: 15px 0 15px 0;
+	list-style: none;
+	margin-left: 100px;
+}
+
+#petent-class{
+	margin-right: 8px;
+}

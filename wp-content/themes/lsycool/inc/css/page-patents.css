@@ -1,0 +1,31 @@
+.entry-content{
+	font: normal 12px/1.5 'Tahoma', 'simsun';	
+}
+
+.entry-content h3 {
+	font-size: 16px;
+}
+.entry-content h3:before {
+	font-size: 16px;	
+}
+.entry-content h3:after {
+	font-size: 16px;
+}
+
+#info-left span, #info-right span{
+	line-height: 26px;
+}
+
+#baseinfo,#detailinfo{
+	padding-bottom: 8px;
+	border-bottom: 1px dashed #ddd;
+}
+
+#legalinfo{
+	padding-bottom: 8px;
+}
+
+p{
+	margin-bottom: 0;
+	text-indent: 2em;
+}
